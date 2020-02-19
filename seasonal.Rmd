@@ -5,24 +5,494 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
+'API Key: c3122f072488a29c5279680b9a2cf88e'
+
+# Example query
+
+'http://ondemand.websol.barchart.com/getHistory.csv?apikey=c3122f072488a29c5279680b9a2cf88e&symbol=ZCZ19&type=daily&startDate=20190101'
+
+
 ```
 
 ## R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
-```{r cars}
-summary(cars)
+```{r }
+#Download data
+# Z Outright
+
+# library(tidyverse)
+# library(profvis)
+# tick_ <- list("00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15",
+#              "16", "17", "18", "19", "20")
+# start_<- list("2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020")
+# 
+# for(j in 1:length(tick_)){
+# tick <- tick_[[j]]
+# start <- start_[[j]]
+# 
+# data <- paste0('http://ondemand.websol.barchart.com/getHistory.csv?apikey=c3122f072488a29c5279680b9a2cf88e&symbol=zcz', tick, '&type=daily&startDate=', start, '0410') %>%
+#   download.file(destfile =paste0("data/zcz", tick,".csv"), method = "libcurl")
+#   pause(1)
+# 
+# data <- paste0('http://ondemand.websol.barchart.com/getHistory.csv?apikey=c3122f072488a29c5279680b9a2cf88e&symbol=zsx', tick, '&type=daily&startDate=', start, '0410') %>%
+#   download.file(destfile =paste0("data/zsx", tick, ".csv"), method = "libcurl")
+#   pause(1)
+# }
+
+# #Download data
+# # N-U Spread
+# 
+library(tidyverse)
+library(profvis)
+tick_ <- list("00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15",
+             "16", "17", "18", "19")
+start_<- list("2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019")
+
+for(j in 1:length(tick_)){
+tick <- tick_[[j]]
+start <- start_[[j]]
+
+data <- paste0('http://ondemand.websol.barchart.com/getHistory.csv?apikey=c3122f072488a29c5279680b9a2cf88e&symbol=zcn', tick, '&type=daily&startDate=', start, '0410') %>%
+  download.file(destfile =paste0("data/zcn", tick,".csv"), method = "libcurl")
+  pause(1)
+
+data <- paste0('http://ondemand.websol.barchart.com/getHistory.csv?apikey=c3122f072488a29c5279680b9a2cf88e&symbol=zcu', tick, '&type=daily&startDate=', start, '0410') %>%
+  download.file(destfile =paste0("data/zcu", tick,".csv"), method = "libcurl")
+  pause(1)
+
+data <- paste0('http://ondemand.websol.barchart.com/getHistory.csv?apikey=c3122f072488a29c5279680b9a2cf88e&symbol=zsn', tick, '&type=daily&startDate=', start, '0410') %>%
+  download.file(destfile =paste0("data/zsn", tick, ".csv"), method = "libcurl")
+  pause(1)
+
+data <- paste0('http://ondemand.websol.barchart.com/getHistory.csv?apikey=c3122f072488a29c5279680b9a2cf88e&symbol=zsu', tick, '&type=daily&startDate=', start, '0410') %>%
+  download.file(destfile =paste0("data/zsu", tick, ".csv"), method = "libcurl")
+  pause(1)
+}
+
+# #Download data
+# # H for Spread
+# 
+library(tidyverse)
+library(profvis)
+tick_ <- list("00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15",
+             "16", "17", "18", "19", "20")
+start_<- list("2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020")
+
+for(j in 2:length(tick_)){
+tick <- tick_[[j]]
+start <- start_[[j]]
+
+data <- paste0('http://ondemand.websol.barchart.com/getHistory.csv?apikey=c3122f072488a29c5279680b9a2cf88e&symbol=zch', tick, '&type=daily&startDate=',start_[[j-1]], '0910') %>%
+  download.file(destfile =paste0("data/zch", tick,".csv"), method = "libcurl")
+  pause(1)
+
+data <- paste0('http://ondemand.websol.barchart.com/getHistory.csv?apikey=c3122f072488a29c5279680b9a2cf88e&symbol=zsh', tick, '&type=daily&startDate=', start_[[j-1]], '0910') %>%
+  download.file(destfile =paste0("data/zsh", tick, ".csv"), method = "libcurl")
+  pause(1)
+
+
+}
+
+
 ```
 
-## Including Plots
+# Outright Z and X
+# Corn 
 
-You can also embed plots, for example:
+```{r}
+library(tidyverse)
+library(lubridate)
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+# as.Date("2020-05-01")-as.Date("2020-01-01") 
+
+j = 1
+data <- read.csv(file=paste0("data/zcz", tick_[[j]],".csv"), header=TRUE, sep=",")
+
+# Take only mondays, 
+# calculate days since Jan 1, 
+# then select days since and close price
+
+data <- data %>% 
+  mutate(weekday = wday(tradingDay)) %>% 
+  filter(weekday == 2) %>%
+  mutate(dayssince = as.numeric(as.Date(tradingDay) - as.Date(paste0(start_[[j]], '-01-01')))) %>%
+  filter(dayssince > 100) %>%
+  select(c(symbol, dayssince, close)) %>%
+  mutate(close_normalized = close/close[1])
+
+for(j in 2:length(tick_)){
+data_temp <- read.csv(file=paste0("data/zcz", tick_[[j]],".csv"), header=TRUE, sep=",")
+
+# Take only mondays, and calculate days since Jan 1
+data_temp <- data_temp %>% 
+  mutate(weekday = wday(tradingDay)) %>% 
+  filter(weekday == 2) %>%
+  mutate(dayssince = as.numeric(as.Date(tradingDay) - as.Date(paste0(start_[[j]], '-01-01')))) %>%
+  filter(dayssince > 100) %>%
+  select(c(symbol, dayssince, close))%>%
+  mutate(close_normalized = close/close[1])
+
+data <- rbind(data, data_temp)
+
+}
+data
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```{r, fig.width=8, fig.height=5.5}
+
+ggplot(data, aes(x = dayssince, y = close_normalized, color = symbol)) + 
+  geom_line() + 
+  geom_text(data = subset(data, dayssince > 339), aes(label = symbol)) +
+  geom_vline(xintercept = 182) +
+  theme_bw() +
+  theme(legend.position = "none") +
+  labs(title = "December Corn Price Deviation Since April 10, 2000-2019", x = "Calendar days since Jan 1")
+
+ggsave("corn_long.png")
+
+```
+
+
+
+```{r, fig.width=8, fig.height=5.5}
+
+ggplot(data = subset(data, dayssince < 193), aes(x = dayssince, y = close_normalized, color = symbol)) + 
+  geom_line() + 
+  geom_text(data = subset(data, dayssince > 184  & dayssince < 192), aes(label = symbol)) +
+  geom_vline(xintercept = 182) +
+  theme_bw() +
+  theme(legend.position = "none") +
+  labs(title = "December Corn Price Deviation Since April 10, 2000-2019", x = "Calendar days since Jan 1")
+
+ggsave("corn_short.png")
+
+```
+
+# Soybeans 
+
+
+```{r}
+library(tidyverse)
+library(lubridate)
+
+# as.Date("2020-05-01")-as.Date("2020-01-01") 
+
+j = 1
+data <- read.csv(file=paste0("data/zsx", tick_[[j]],".csv"), header=TRUE, sep=",")
+
+# Take only mondays, 
+# calculate days since Jan 1, 
+# then select days since and close price
+
+data <- data %>% 
+  mutate(weekday = wday(tradingDay)) %>% 
+  filter(weekday == 2) %>%
+  mutate(dayssince = as.numeric(as.Date(tradingDay) - as.Date(paste0(start_[[j]], '-01-01')))) %>%
+  filter(dayssince > 100) %>%
+  select(c(symbol, dayssince, close)) %>%
+  mutate(close_normalized = close/close[1])
+
+for(j in 2:length(tick_)){
+data_temp <- read.csv(file=paste0("data/zsx", tick_[[j]],".csv"), header=TRUE, sep=",")
+
+# Take only mondays, and calculate days since Jan 1
+data_temp <- data_temp %>% 
+  mutate(weekday = wday(tradingDay)) %>% 
+  filter(weekday == 2) %>%
+  mutate(dayssince = as.numeric(as.Date(tradingDay) - as.Date(paste0(start_[[j]], '-01-01')))) %>%
+  filter(dayssince > 100) %>%
+  select(c(symbol, dayssince, close))%>%
+  mutate(close_normalized = close/close[1])
+
+data <- rbind(data, data_temp)
+
+}
+data
+```
+
+
+
+```{r, fig.width=8, fig.height=5.5}
+
+ggplot(data, aes(x = dayssince, y = close_normalized, color = symbol)) + 
+  geom_line() + 
+  geom_text(data = subset(data, dayssince > 310), aes(label = symbol)) +
+  geom_vline(xintercept = 182) +
+  theme_bw() +
+  theme(legend.position = "none") +
+  labs(title = "November Soybean Price Deviation Since April 10, 2000-2019", x = "Calendar days since Jan 1")
+
+ggsave("soy_long.png")
+
+```
+
+
+
+```{r, fig.width=8, fig.height=5.5}
+
+ggplot(data = subset(data, dayssince < 193), aes(x = dayssince, y = close_normalized, color = symbol)) + 
+  geom_line() + 
+  geom_text(data = subset(data, dayssince > 184  & dayssince < 192), aes(label = symbol)) +
+  geom_vline(xintercept = 182) +
+  theme_bw() +
+  theme(legend.position = "none") +
+  labs(title = "November Soybean Price Deviation Since April 10, 2000-2019", x = "Calendar days since Jan 1")
+
+ggsave("soy_short.png")
+
+
+```
+
+# N-U Spread
+# Corn 
+
+```{r}
+library(tidyverse)
+library(lubridate)
+
+# as.Date("2020-05-01")-as.Date("2020-01-01") 
+
+# U
+j = 1
+data <- read.csv(file=paste0("data/zcn", tick_[[j]],".csv"), header=TRUE, sep=",")
+
+# Take only mondays, 
+# calculate days since Jan 1, 
+# then select days since and close price
+
+data <- data %>% 
+  mutate(weekday = wday(tradingDay)) %>% 
+  filter(weekday == 2) %>%
+  mutate(dayssince = as.numeric(as.Date(tradingDay) - as.Date(paste0(start_[[j]], '-01-01')))) %>%
+  filter(dayssince > 100) %>%
+  select(c(symbol, tradingDay, dayssince, close))
+  #mutate(close_normalized = close/close[1])
+
+for(j in 2:length(tick_)){
+data_temp <- read.csv(file=paste0("data/zcn", tick_[[j]],".csv"), header=TRUE, sep=",")
+
+# Take only mondays, and calculate days since Jan 1
+data_temp <- data_temp %>% 
+  mutate(weekday = wday(tradingDay)) %>% 
+  filter(weekday == 2) %>%
+  mutate(dayssince = as.numeric(as.Date(tradingDay) - as.Date(paste0(start_[[j]], '-01-01')))) %>%
+  filter(dayssince > 100) %>%
+  select(c(symbol, tradingDay, dayssince, close))
+  #mutate(close_normalized = close/close[1])
+
+data <- rbind(data, data_temp)
+
+}
+dataN <- data
+
+# U
+j = 1
+data <- read.csv(file=paste0("data/zcu", tick_[[j]],".csv"), header=TRUE, sep=",")
+
+# Take only mondays, 
+# calculate days since Jan 1, 
+# then select days since and close price
+
+data <- data %>% 
+  mutate(weekday = wday(tradingDay)) %>% 
+  filter(weekday == 2) %>%
+  mutate(dayssince = as.numeric(as.Date(tradingDay) - as.Date(paste0(start_[[j]], '-01-01')))) %>%
+  filter(dayssince > 100) %>%
+  select(c(symbol, tradingDay, dayssince, close)) 
+  #mutate(close_normalized = close/close[1])
+
+for(j in 2:length(tick_)){
+data_temp <- read.csv(file=paste0("data/zcu", tick_[[j]],".csv"), header=TRUE, sep=",")
+
+# Take only mondays, and calculate days since Jan 1
+data_temp <- data_temp %>% 
+  mutate(weekday = wday(tradingDay)) %>% 
+  filter(weekday == 2) %>%
+  mutate(dayssince = as.numeric(as.Date(tradingDay) - as.Date(paste0(start_[[j]], '-01-01')))) %>%
+  filter(dayssince > 100) %>%
+  select(c(symbol, tradingDay, dayssince, close))
+  #mutate(close_normalized = close/close[1])
+
+data <- rbind(data, data_temp)
+
+}
+dataU <- data
+
+data <- merge(dataN, dataU, by = "tradingDay") %>%
+  mutate(spread = close.x - close.y) 
+  
+
+```
+
+```{r, fig.width=8, fig.height=5.5}
+
+ggplot(data, aes(x = dayssince.x, y = spread, color = symbol.x)) + 
+  geom_line() + 
+  geom_text(data = subset(data, dayssince.x > 180), aes(label = symbol.x)) +
+  geom_vline(xintercept = 182) +
+  theme_bw() +
+  theme(legend.position = "none") +
+  labs(title = "N - U Corn Price Deviation Since April 10, 2000-2019", x = "Calendar days since Jan 1")
+
+#ggsave("corn_long.png")
+
+data %>% filter(spread <= 0) %>%
+  ggplot(aes(x = dayssince.x, y = spread, color = symbol.x)) + 
+  geom_line() + 
+  geom_text(data = subset(data, dayssince.x > 180 & spread <= 0), aes(label = symbol.x)) +
+  geom_vline(xintercept = 182) +
+  theme_bw() +
+  theme(legend.position = "none") +
+  labs(title = "N - U Corn Price Deviation Since April 10, 2000-2019", x = "Calendar days since Jan 1")
+
+
+```
+
+
+
+```{r, fig.width=8, fig.height=5.5}
+
+ggplot(data = subset(data, dayssince < 193), aes(x = dayssince, y = close_normalized, color = symbol)) + 
+  geom_line() + 
+  geom_text(data = subset(data, dayssince > 184  & dayssince < 192), aes(label = symbol)) +
+  geom_vline(xintercept = 182) +
+  theme_bw() +
+  theme(legend.position = "none") +
+  labs(title = "December Corn Price Deviation Since April 10, 2000-2019", x = "Calendar days since Jan 1")
+
+ggsave("corn_short.png")
+
+```
+
+# Z,X - H spread
+
+```{r}
+library(tidyverse)
+library(lubridate)
+
+# as.Date("2020-05-01")-as.Date("2020-01-01") 
+
+# Z
+j = 1
+data <- read.csv(file=paste0("data/zcz", tick_[[j]],".csv"), header=TRUE, sep=",")
+
+# Take only mondays, 
+# calculate days since Jan 1, 
+# then select days since and close price
+
+data <- data %>% 
+  mutate(weekday = wday(tradingDay)) %>% 
+  filter(weekday == 2) %>%
+  mutate(dayssince = as.numeric(as.Date(tradingDay) - as.Date(paste0(start_[[j]], '-01-01')))) %>%
+  filter(dayssince > 100) %>%
+  select(c(symbol, tradingDay, dayssince, close))
+  #mutate(close_normalized = close/close[1])
+
+for(j in 2:length(tick_)-1){
+data_temp <- read.csv(file=paste0("data/zcz", tick_[[j]],".csv"), header=TRUE, sep=",")
+
+# Take only mondays, and calculate days since Jan 1
+data_temp <- data_temp %>% 
+  mutate(weekday = wday(tradingDay)) %>% 
+  filter(weekday == 2) %>%
+  mutate(dayssince = as.numeric(as.Date(tradingDay) - as.Date(paste0(start_[[j]], '-01-01')))) %>%
+  filter(dayssince > 100) %>%
+  select(c(symbol, tradingDay, dayssince, close))
+  #mutate(close_normalized = close/close[1])
+
+data <- rbind(data, data_temp)
+
+}
+dataZ <- data
+
+# H
+j = 1
+data <- read.csv(file=paste0("data/zch", tick_[[j+1]],".csv"), header=TRUE, sep=",")
+
+# Take only mondays, 
+# calculate days since Jan 1, 
+# then select days since and close price
+
+data <- data %>% 
+  mutate(weekday = wday(tradingDay)) %>% 
+  filter(weekday == 2) %>%
+  mutate(dayssince = as.numeric(as.Date(tradingDay) - as.Date(paste0(start_[[j]], '-01-01')))) %>%
+  filter(dayssince > 100) %>%
+  select(c(symbol, tradingDay, dayssince, close)) 
+  #mutate(close_normalized = close/close[1])
+
+for(j in 2:length(tick_)-1){
+data_temp <- read.csv(file=paste0("data/zch", tick_[[j+1]],".csv"), header=TRUE, sep=",")
+
+# Take only mondays, and calculate days since Jan 1
+data_temp <- data_temp %>% 
+  mutate(weekday = wday(tradingDay)) %>% 
+  filter(weekday == 2) %>%
+  mutate(dayssince = as.numeric(as.Date(tradingDay) - as.Date(paste0(start_[[j]], '-01-01')))) %>%
+  filter(dayssince > 100) %>%
+  select(c(symbol, tradingDay, dayssince, close))
+  #mutate(close_normalized = close/close[1])
+
+data <- rbind(data, data_temp)
+
+}
+dataH <- data
+
+data <- merge(dataZ, dataH, by = "tradingDay") %>%
+  mutate(spread = close.x - close.y) 
+
+data$tradingDay <- as.Date(data$tradingDay)
+
+libor <- read.csv(file="libor.csv", header=FALSE, sep=",")
+colnames(libor) <- c("tradingDay", "libor") 
+libor$tradingDay <- as.Date(libor$tradingDay)
+libor$libor     <- as.numeric(as.character(libor$libor))
+
+data <- merge(data, libor, by = "tradingDay") 
+
+data <- mutate(data, FFC = 90*((libor+2)/(100*360)*close.x + .165)) %>%
+  mutate(percent_FFC = spread/FFC*(-1))
+
+select(data, c(tradingDay, symbol.x, close.x, symbol.y, close.y, libor)) %>%
+  write.csv("ch5-lab.csv")
+
+```
+
+
+```{r, fig.width=10, fig.height=5.5}
+
+ggplot(data, aes(x = tradingDay, y = spread)) + 
+  geom_point() + 
+  #geom_text(data = subset(data, dayssince > 184  & dayssince < 192), aes(label = symbol)) +
+  #geom_vline(xintercept = 182) +
+  theme_bw() +
+  theme(legend.position = "none") +
+  
+  scale_x_date(date_breaks = "1 year", date_labels = "%m %Y")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  labs(title = "December - March Corn Price Spread Sep - Dec, 2000-2019", x = "")
+
+ggsave("corn_Z-H.png")
+
+```
+
+
+```{r, fig.width=10, fig.height=5.5}
+
+ggplot(data, aes(x = tradingDay, y = percent_FFC)) + 
+  geom_point() + 
+  #geom_text(data = subset(data, dayssince > 184  & dayssince < 192), aes(label = symbol)) +
+  #geom_vline(xintercept = 182) +
+  theme_bw() +
+  theme(legend.position = "none") +
+  
+  scale_x_date(date_breaks = "1 year", date_labels = "%m %Y")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  labs(title = "December - March Corn Price Spread Percent of FFC Sep - Dec, 2000-2019", x = "")
+
+ggsave("corn_Z-H_percentFFC.png")
+
+```
